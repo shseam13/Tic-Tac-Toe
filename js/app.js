@@ -2,6 +2,10 @@ let turn0 = true;
 let boxes = document.querySelectorAll(".box");
 let reset = document.getElementById("reset");
 let winner_alert = document.getElementById("winner-alert-id");
+// disable forwar history, so that the browser back button can be disabled.
+window.history.forward(1);
+// disabling right click.
+document.addEventListener('contextmenu', event => event.preventDefault());
 
 const win = [
     [0,1,2],
@@ -46,6 +50,7 @@ const boxDisabled = () =>{
     }
 }
 
+// checkWinner() function executes after each input and checkes if the innerText of the boxes matches the winning pattern we defined in 'win' array. Otherwise it calls the checkDraw() function autometically.
 const checkWinner = () =>{
     let winner = false;
     for(let i = 0; i < win.length; i++){
@@ -61,14 +66,23 @@ const checkWinner = () =>{
             checkDraw()
         }
     }
-
 }
 
+
+
+// draw functionalities if the value of 'i' is equal to the value of box 'length-1' then it should be a draw. Because there are no box left to input and still the checkWinner() function didn't do its work then the checkDraw() function will autometically executed.
 const checkDraw = () =>{
     let draw = true;
     for(let i = 0; i < boxes.length; i++){
+        console.log(i)
         if(boxes[i].innerText === ''){
             draw = false;
+            break;
+        }else if(i === boxes.length - 1){
+            winner_alert.style.display = 'block';
+            winner_alert.innerText = `It's a draw`;
+            reset.innerText = 'Play Again';
+            boxDisabled();
             break;
         }
     }
